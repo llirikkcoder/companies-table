@@ -4,11 +4,16 @@ import { usersFetchData, usersJSONData } from '../actions/users'
 
 
 const Table = () => {
-  const [checkedUsers, setChecked] = useState([])
+  const [checkedCompanies, setChecked] = useState([])
+  const [checkedHumans, setHumanChecked] = useState([])
   const [isHumanOn, showHuman] = useState(false)
 
 
   const { companies } = useSelector(state => state.companies)
+
+  // todo: завести в redux пользователей
+  // const { users } = useSelector(state => state.users)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -17,24 +22,31 @@ const Table = () => {
   }, [dispatch])
 
 
-  const checkHandler = (id) => {
-    showHuman(!isHumanOn)
-    setChecked(checkedUsers.includes(id)
-      ? checkedUsers.filter(it => it !== id)
-      : [...checkedUsers, id])
+  const checkCompanyHandler = (id) => {
+    setChecked(checkedCompanies.includes(id)
+      ? checkedCompanies.filter(it => it !== id)
+      : [...checkedCompanies, id])
   }
+
+  const checkHumanHandler = (id) => {
+    setHumanChecked(checkedHumans.includes(id)
+      ? checkedHumans.filter(it => it !== id)
+      : [...checkedHumans, id])
+  }
+
+  
 
   const checkAll = () => {
     setChecked(
-      checkedUsers.length !== companies.length
+      checkedCompanies.length !== companies.length
         ? companies.map((it) => it.id)
         : []
     )
   }
 
   const checkAllHumans = () => {
-    setChecked(
-      checkedUsers.length !== companies.length
+    setHumanChecked(
+      checkedHumans.length !== companies.length
         ? companies.map((it) => it.id)
         : []
     )
@@ -58,12 +70,12 @@ const Table = () => {
   const renderCompaniesBody = () => {
     return companies && companies.map(({ id, companyName, humanCount, adress }) => {
       return (
-        <tr key={id} className={checkedUsers.includes(id) ? 'bg-gray-400' : ''}>
+        <tr key={id} className={checkedCompanies.includes(id) ? 'bg-gray-400' : ''}>
           <td className="px-4 py-2">{companyName}</td>
           <td className="px-4 py-2">{humanCount}</td>
           <td className="px-4 py-2">{adress}</td>
           <td className='check-box'>
-            <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkHandler(id)} checked={checkedUsers.includes(id)} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkCompanyHandler(id)} checked={checkedCompanies.includes(id)} />
           </td>
         </tr>
       )
@@ -75,12 +87,12 @@ const Table = () => {
       { id, humans }) => {
       return humans.map(human => {
         return (
-          checkedUsers.includes(id) && <tr key={human.id} className={checkedUsers.includes(id) ? 'bg-gray-400' : ''}>
+          checkedCompanies.includes(id) && <tr key={human.id} className={checkedHumans.includes(id) ? 'bg-gray-400' : ''}>
             <td className="px-4 py-2">{human.surname}</td>
             <td className="px-4 py-2">{human.name}</td>
             <td className="px-4 py-2">{human.position}</td>
             <td className='check-box'>
-              <input className="mr-2 leading-tight" type="checkbox" checked={checkedUsers.includes(human.id)} />
+              <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkHumanHandler(human.id)} checked={checkedHumans.includes(human.id)} />
             </td>
           </tr>
         )
@@ -105,7 +117,7 @@ const Table = () => {
 
         <div className="md:flex bg-gray-200 md:items-center mb-6">
           <label className="md:w-2/3 block text-gray-500 font-bold">
-            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAll} checked={companies.length === checkedUsers.length} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAll} checked={companies.length === checkedCompanies.length} />
             <span className="text-sm">
               Выбрать все!
             </span>
