@@ -34,8 +34,6 @@ const Table = () => {
       : [...checkedHumans, id])
   }
 
-  
-
   const checkAll = () => {
     setChecked(
       checkedCompanies.length !== companies.length
@@ -43,6 +41,14 @@ const Table = () => {
         : []
     )
   }
+
+  // тестовая функция
+  const getAllHumansCount = () => {
+    return companies.map(company => {
+      return console.log('company.humans[0]', company.humans[0])
+    })
+  }
+  getAllHumansCount()
 
   const checkAllHumans = () => {
     setHumanChecked(
@@ -87,7 +93,7 @@ const Table = () => {
       { id, humans }) => {
       return humans.map(human => {
         return (
-          checkedCompanies.includes(id) && <tr key={human.id} className={checkedHumans.includes(id) ? 'bg-gray-400' : ''}>
+          checkedCompanies.includes(id) && <tr key={human.id} className={checkedHumans.includes(human.id) ? 'bg-gray-400' : ''}>
             <td className="px-4 py-2">{human.surname}</td>
             <td className="px-4 py-2">{human.name}</td>
             <td className="px-4 py-2">{human.position}</td>
@@ -117,7 +123,8 @@ const Table = () => {
 
         <div className="md:flex bg-gray-200 md:items-center mb-6">
           <label className="md:w-2/3 block text-gray-500 font-bold">
-            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAll} checked={companies.length === checkedCompanies.length} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAll} />
+            {/* checked={companies.length === checkedCompanies.length}  */}
             <span className="text-sm">
               Выбрать все!
             </span>
@@ -138,10 +145,10 @@ const Table = () => {
         <div className="w-2/3 rounded overflow-hidden  shadow-lg text-center mt-5">
 
           <h1 id='title'>Сотрудники</h1>
-
+          
           <div className="md:flex bg-gray-200 md:items-center mb-6">
             <label className="md:w-2/3 block text-gray-500 font-bold">
-              <input className="mr-2 leading-tight" type="checkbox" />
+              <input className="mr-2 leading-tight" onChange={checkAllHumans} type="checkbox" />
               <span className="text-sm">
                 Выбрать все!
               </span>
