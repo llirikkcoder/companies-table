@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { companies } from './users'
+import { companies } from './companies'
 
 export default combineReducers({
   companies

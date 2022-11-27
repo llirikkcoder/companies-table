@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { usersFetchData, usersJSONData } from '../actions/users'
+import { companiesFetchData, companiesJSONData } from '../actions/companies'
 
 
 const Table = () => {
@@ -17,8 +17,8 @@ const Table = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // dispatch(usersFetchData(URL))
-    dispatch(usersJSONData())
+    // dispatch(companiesFetchData(URL))
+    dispatch(companiesJSONData())
   }, [dispatch])
 
 
@@ -34,21 +34,13 @@ const Table = () => {
       : [...checkedHumans, id])
   }
 
-  const checkAll = () => {
+  const checkAllCompanies = () => {
     setChecked(
       checkedCompanies.length !== companies.length
         ? companies.map((it) => it.id)
         : []
     )
   }
-
-  // тестовая функция
-  const getAllHumansCount = () => {
-    return companies.map(company => {
-      return console.log('company.humans[0]', company.humans[0])
-    })
-  }
-  getAllHumansCount()
 
   const checkAllHumans = () => {
     setHumanChecked(
@@ -57,6 +49,24 @@ const Table = () => {
         : []
     )
   }
+
+  // Кол-во сотрудников данной компании
+  const getHumansCount = () => {
+    return companies.map(company => {
+      return console.log('Кол-во сотрудников данной компании', company.humans.length)
+    })
+  }
+  getHumansCount()
+
+  // TODO - Кол-во сотрудников выделенной чекбоксом компании
+  const getSelectedCompanyHumansCount = () => {
+
+  }
+
+  console.log('checkedHumans:', checkedHumans)
+  console.log('checkedCompanies:', checkedCompanies)
+  console.log('companies[0]:', companies[0])
+  
 
   const headerCompaniesElement = ['Компания', 'Кол-во сотрудников', 'Адрес', 'Чекбокс']
   const headerHumansElement = ['Фамилия', 'Имя', 'Должность', 'Чекбокс']
@@ -123,14 +133,14 @@ const Table = () => {
 
         <div className="md:flex bg-gray-200 md:items-center mb-6">
           <label className="md:w-2/3 block text-gray-500 font-bold">
-            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAll} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAllCompanies} />
             {/* checked={companies.length === checkedCompanies.length}  */}
             <span className="text-sm">
               Выбрать все!
             </span>
           </label>
         </div>
-        <table id='users' className="table-auto text-center content-around">
+        <table id='companies' className="table-auto text-center content-around">
           <thead>
             <tr>{renderCompaniesHeader()}</tr>
           </thead>
@@ -154,7 +164,7 @@ const Table = () => {
               </span>
             </label>
           </div>
-          <table id='users' className="table-auto text-center content-around">
+          <table id='companies' className="table-auto text-center content-around">
             <thead>
               <tr>{renderHumansHeader()}</tr>
             </thead>
