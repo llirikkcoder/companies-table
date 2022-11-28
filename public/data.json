@@ -8,13 +8,13 @@
       {
         "id": 3,
         "name": "Владимир",
-        "surmane": "Пранов",
+        "surname": "Пранов",
         "position": "Инженер"
       },
       {
         "id": 4,
         "name": "Аристарх",
-        "surmane": "Рогов",
+        "surname": "Рогов",
         "position": "Админ"
       }
     ]
@@ -28,7 +28,7 @@
       {
         "id": 5,
         "name": "Святослав",
-        "surmane": "Сапогов",
+        "surname": "Сапогов",
         "position": "Инженер"
       }
     ]
@@ -42,7 +42,7 @@
       {
         "id": 7,
         "name": "Сергей",
-        "surmane": "Жилин",
+        "surname": "Жилин",
         "position": "Back-end"
       }
     ]

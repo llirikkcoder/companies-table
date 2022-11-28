@@ -163,8 +163,8 @@ const Table = () => {
   }
 
   return (
-    <>
-      <div className="w-2/3 rounded overflow-hidden  shadow-lg text-center mt-5">
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>
+      <div className=" rounded overflow-hidden shadow-lg text-center mt-5">
 
         <h1 id='title'>Компании</h1>
 
@@ -188,8 +188,8 @@ const Table = () => {
         </table>
       </div>
 
-      {true &&
-        <div className="w-2/3 rounded overflow-hidden  shadow-lg text-center mt-5">
+      {checkedCompaniesId.length !==0 &&
+        <div className=" rounded overflow-hidden  shadow-lg text-center mt-5">
 
           <h1 id='title'>Сотрудники</h1>
 
@@ -214,7 +214,7 @@ const Table = () => {
           </table>
         </div>
       }
-    </>)
+    </div>)
 
 
 }
