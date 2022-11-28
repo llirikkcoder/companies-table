@@ -1,6 +1,5 @@
 export function companiesJSONData() {
   return async (dispatch) => {
-    dispatch({ type: 'ITEMS_IS_LOADING' });
 
     await fetch('data.json',
       {
@@ -11,37 +10,33 @@ export function companiesJSONData() {
       }
     )
       .then(function (response) {
-        dispatch({ type: 'ITEMS_IS_LOADING' });
         console.log('response:', response)
-        return response;
+        return response.json();
       })
-      .then((response) => response.json())
       .then((data) => dispatch({
         type: 'ITEMS_FETCH_DATA_SUCCESS',
         companies: data
       }))
-      // .catch(() => dispatch(companiesHasErrored(true)))
   }
 }
 
-// export function companiesHasErrored(bool) {
-//   return {
-//     type: 'ITEMS_HAS_ERRORED',
-//     hasErrored: bool
-//   }
-// }
+export function getHumansCount() {
+  return (dispatch) => {
+    dispatch({
+    type: 'GET_COMPANY_HUMANS_COUNT',
+    companyHumansCount: [1, 4]
+  })
+}
+}
 
 // export function companiesFetchData(url) {
 //   return async (dispatch) => {
-//     dispatch({ type: 'ITEMS_IS_LOADING' });
 
 //     await fetch(url)
 //         .then((response) =>{
 //             if(!response.ok){
 //               throw Error(response.statusText);
 //             }
-
-//             dispatch({type: 'ITEMS_IS_LOADING'});
 
 //             return response;
 //           })
@@ -50,8 +45,6 @@ export function companiesJSONData() {
 //             type: 'ITEMS_FETCH_DATA_SUCCESS',
 //             companies: data
 //           }))
-//           // .catch(() => dispatch(companiesHasErrored(true)))
-
 //   }
 // }
 

@@ -1,72 +1,118 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { companiesFetchData, companiesJSONData } from '../actions/companies'
+import { companiesJSONData, getHumansCount } from '../actions/companies'
 
 
 const Table = () => {
-  const [checkedCompanies, setChecked] = useState([])
-  const [checkedHumans, setHumanChecked] = useState([])
+  const [checkedCompaniesId, setChecked] = useState([])
+  const [checkedHumansIds, setHumanChecked] = useState([])
   const [isHumanOn, showHuman] = useState(false)
 
+  // TODO: - понять что делает и как работает setHumanChecked(id)
+  // let testHumanId = () => setHumanChecked(3)
+  // console.log('testHumanId():', testHumanId())
 
   const { companies } = useSelector(state => state.companies)
+  // const { companyHumansCount } = useSelector(state => state.companyHumansCount)
 
-  // todo: завести в redux пользователей
+  // TODO: завести в redux пользователей
   // const { users } = useSelector(state => state.users)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // dispatch(companiesFetchData(URL))
     dispatch(companiesJSONData())
+
   }, [dispatch])
+
+  // useEffect(() => {
+  //   dispatch(getHumansCount())
+
+  // }, [])
 
 
   const checkCompanyHandler = (id) => {
-    setChecked(checkedCompanies.includes(id)
-      ? checkedCompanies.filter(it => it !== id)
-      : [...checkedCompanies, id])
+    setChecked(checkedCompaniesId.includes(id)
+      ? checkedCompaniesId.filter(it => it !== id)
+      : [...checkedCompaniesId, id])
   }
 
-  const checkHumanHandler = (id) => {
-    setHumanChecked(checkedHumans.includes(id)
-      ? checkedHumans.filter(it => it !== id)
-      : [...checkedHumans, id])
-  }
-
-  const checkAllCompanies = () => {
+// TODO: - понять как работает эта функция
+//
+  const selectAllCompanies = () => {
     setChecked(
-      checkedCompanies.length !== companies.length
-        ? companies.map((it) => it.id)
+      checkedCompaniesId.length !== companies.length
+        ? companies.map((company) => company.id)
         : []
     )
   }
 
-  const checkAllHumans = () => {
+  // выделение сотрудников при выставлении checkbox = on
+  const selectHumanHandler = (id) => {
+    setHumanChecked(checkedHumansIds.includes(id)
+      ? checkedHumansIds.filter(it => it !== id)
+      : [...checkedHumansIds, id])
+    }
+  console.log('checkedHumansIds:', checkedHumansIds);
+
+  // TODO: - выделить/убрать всех сотрудников сразу
+  const selectAllHumansOfSelectedCompanies = () => {
+    // setHumanChecked(allCheckedCopaniesHumansIds)
     setHumanChecked(
-      checkedHumans.length !== companies.length
-        ? companies.map((it) => it.id)
+      // если число выделенных сотрудников не равно общему числу сотрудиков всех выделенных компаний
+      checkedHumansIds.length !== allCheckedCopaniesHumansCount
+      // TODO: - выделить невыделенных сотрудников сравнив со списком id всех сотрудников выделенных компаний allCheckedCopaniesHumansIds
+        ? allCheckedCopaniesHumansIds
         : []
     )
+    
+    console.log('allCheckedCopaniesHumansIds:', allCheckedCopaniesHumansIds);
+    console.log('allCheckedCopaniesHumansCount:', allCheckedCopaniesHumansCount);
+    console.log('checkedHumansIds:', checkedHumansIds);
+    // console.log('allCheckedCopaniesHumansIds.map((it) => it.id):', allCheckedCopaniesHumansIds.map((it) => it.id));
   }
 
   // Кол-во сотрудников данной компании
-  const getHumansCount = () => {
-    return companies.map(company => {
-      return console.log('Кол-во сотрудников данной компании', company.humans.length)
-    })
-  }
-  getHumansCount()
+  // const getHumansCount = () => {
+  //   return companies.map(company => {
+  //     return console.log('Кол-во сотрудников данной компании', company.humans.length)
+  //   })
+  // }
+  // getHumansCount()
 
-  // TODO - Кол-во сотрудников выделенной чекбоксом компании
-  const getSelectedCompanyHumansCount = () => {
-
-  }
-
-  console.log('checkedHumans:', checkedHumans)
-  console.log('checkedCompanies:', checkedCompanies)
-  console.log('companies[0]:', companies[0])
   
+  // массив ВЫДЕЛЕННЫХ компаний
+  let selectedCompanies = []
+  
+  // взял идетнификаторы из массива ИДЕНТИФИКАТОРОВ ВЫДЕЛЕННЫХ компаний checkedCompaniesId пробежался ими по массиву компаний
+  // наполнил массив selectedCompanies объектами выделенных компаний ???ОБЕРНУТЫМИ!!! В МАССИВ
+  // var companiesArray = Object.values(companies).map((company) => company);
+  for (let id of checkedCompaniesId) {
+    // console.log('Выделенная компания:', companiesArray.filter((company) => company.id === id))
+    selectedCompanies.push(companies.filter(company => company.id === id))
+  }
+  // console.log('selectedCompanies:', selectedCompanies.flat())
+
+  // переменная для общего количества сотрудников выделенных компаний allCheckedCopaniesHumansCount
+  let allCheckedCopaniesHumansCount = 0
+
+  // allCheckedCopaniesHumansCount - общее число сотрудников всех выделенных компаний 
+  for (let company of selectedCompanies.flat()) {
+    allCheckedCopaniesHumansCount = allCheckedCopaniesHumansCount + company.humans.length
+  }
+  // console.log('allCheckedCopaniesHumansCount:', allCheckedCopaniesHumansCount)
+
+  // allCheckedCopaniesHumansIds - список id всех сотрудников выделенных компаний
+  let allCheckedCopaniesHumansIds = []
+  for (let company of selectedCompanies.flat()) {
+    // allCheckedCopaniesHumansCount.push(company.humans.length)
+    for(let human of company.humans) {
+      allCheckedCopaniesHumansIds.push(human.id)
+      // console.log('human.id:', human.id)
+    }
+  }
+  // console.log('список id всех сотрудников выделенных компаний:', allCheckedCopaniesHumansIds)
+
 
   const headerCompaniesElement = ['Компания', 'Кол-во сотрудников', 'Адрес', 'Чекбокс']
   const headerHumansElement = ['Фамилия', 'Имя', 'Должность', 'Чекбокс']
@@ -84,14 +130,14 @@ const Table = () => {
   }
 
   const renderCompaniesBody = () => {
-    return companies && companies.map(({ id, companyName, humanCount, adress }) => {
+    return companies && companies.map(({ id, companyName, humansCount, adress }) => {
       return (
-        <tr key={id} className={checkedCompanies.includes(id) ? 'bg-gray-400' : ''}>
+        <tr key={id} className={checkedCompaniesId.includes(id) ? 'bg-gray-400' : ''}>
           <td className="px-4 py-2">{companyName}</td>
-          <td className="px-4 py-2">{humanCount}</td>
+          <td className="px-4 py-2">{humansCount}</td>
           <td className="px-4 py-2">{adress}</td>
           <td className='check-box'>
-            <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkCompanyHandler(id)} checked={checkedCompanies.includes(id)} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkCompanyHandler(id)} checked={checkedCompaniesId.includes(id)} />
           </td>
         </tr>
       )
@@ -103,26 +149,17 @@ const Table = () => {
       { id, humans }) => {
       return humans.map(human => {
         return (
-          checkedCompanies.includes(id) && <tr key={human.id} className={checkedHumans.includes(human.id) ? 'bg-gray-400' : ''}>
+          checkedCompaniesId.includes(id) && <tr key={human.id} className={checkedHumansIds.includes(human.id) ? 'bg-gray-400' : ''}>
             <td className="px-4 py-2">{human.surname}</td>
             <td className="px-4 py-2">{human.name}</td>
             <td className="px-4 py-2">{human.position}</td>
             <td className='check-box'>
-              <input className="mr-2 leading-tight" type="checkbox" onChange={() => checkHumanHandler(human.id)} checked={checkedHumans.includes(human.id)} />
+              <input className="mr-2 leading-tight" type="checkbox" onChange={() => selectHumanHandler(human.id)} checked={checkedHumansIds.includes(human.id)} />
             </td>
           </tr>
         )
       })
     })
-  }
-
-
-  if (companies.hasErrored) {
-    return <p>Sorry! There was an error loading the items</p>;
-  }
-
-  if (companies.isLoading) {
-    return <p>Loading…</p>;
   }
 
   return (
@@ -133,8 +170,8 @@ const Table = () => {
 
         <div className="md:flex bg-gray-200 md:items-center mb-6">
           <label className="md:w-2/3 block text-gray-500 font-bold">
-            <input className="mr-2 leading-tight" type="checkbox" onChange={checkAllCompanies} />
-            {/* checked={companies.length === checkedCompanies.length}  */}
+            <input className="mr-2 leading-tight" type="checkbox" onChange={selectAllCompanies} />
+            {/* checked={companies.length === checkedCompaniesId.length}  */}
             <span className="text-sm">
               Выбрать все!
             </span>
@@ -155,10 +192,11 @@ const Table = () => {
         <div className="w-2/3 rounded overflow-hidden  shadow-lg text-center mt-5">
 
           <h1 id='title'>Сотрудники</h1>
-          
+
           <div className="md:flex bg-gray-200 md:items-center mb-6">
             <label className="md:w-2/3 block text-gray-500 font-bold">
-              <input className="mr-2 leading-tight" onChange={checkAllHumans} type="checkbox" />
+              {/* TODO: сделать выделениие чекбоксов если*/}
+              <input className="mr-2 leading-tight" onChange={selectAllHumansOfSelectedCompanies} type="checkbox" />
               <span className="text-sm">
                 Выбрать все!
               </span>

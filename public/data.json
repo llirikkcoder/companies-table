@@ -1,8 +1,8 @@
 [
   {
-    "id": 1,
+    "id": 23,
     "companyName": "Астра",
-    "humanCount": "2",
+    "humansCount": "2",
     "adress": "Ленинский проспект 25",
     "humans": [
       {
@@ -22,7 +22,7 @@
   {
     "id": 2,
     "companyName": "Айти-Меда",
-    "humanCount": "4",
+    "humansCount": "1",
     "adress": "Советский проспект 34",
     "humans": [
       {
@@ -30,6 +30,20 @@
         "name": "Святослав",
         "surmane": "Сапогов",
         "position": "Инженер"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "companyName": "МедаЛаб",
+    "humansCount": "1",
+    "adress": "Озерова 34",
+    "humans": [
+      {
+        "id": 7,
+        "name": "Сергей",
+        "surmane": "Жилин",
+        "position": "Back-end"
       }
     ]
   }
