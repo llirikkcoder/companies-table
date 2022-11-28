@@ -40,11 +40,14 @@ const Table = () => {
 // TODO: - понять как работает эта функция
 //
   const selectAllCompanies = () => {
-    setChecked(
-      checkedCompaniesId.length !== companies.length
-        ? companies.map((company) => company.id)
-        : []
-    )
+    // if(!(checkedCompaniesId.length === companies.length)){
+      setChecked(
+        checkedCompaniesId.length !== companies.length
+          ? companies.map((company) => company.id)
+          : []
+      )
+    // }
+    
   }
 
   // выделение сотрудников при выставлении checkbox = on
@@ -170,7 +173,7 @@ const Table = () => {
 
         <div className="md:flex bg-gray-200 md:items-center mb-6">
           <label className="md:w-2/3 block text-gray-500 font-bold">
-            <input className="mr-2 leading-tight" type="checkbox" onChange={selectAllCompanies} />
+            <input className="mr-2 leading-tight" type="checkbox" onChange={selectAllCompanies} checked={checkedCompaniesId.length === companies.length} />
             {/* checked={companies.length === checkedCompaniesId.length}  */}
             <span className="text-sm">
               Выбрать все!
@@ -196,7 +199,7 @@ const Table = () => {
           <div className="md:flex bg-gray-200 md:items-center mb-6">
             <label className="md:w-2/3 block text-gray-500 font-bold">
               {/* TODO: сделать выделениие чекбоксов если*/}
-              <input className="mr-2 leading-tight" onChange={selectAllHumansOfSelectedCompanies} type="checkbox" />
+              <input className="mr-2 leading-tight" onChange={selectAllHumansOfSelectedCompanies} checked={checkedHumansIds.length === allCheckedCopaniesHumansCount} type="checkbox" />
               <span className="text-sm">
                 Выбрать все!
               </span>
